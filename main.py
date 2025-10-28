@@ -21,7 +21,7 @@ def main():
 
         # 5.2
         print('Problem 5.2')
-        learning_to_best_respond(tree, info_sets)
+        learning_to_best_respond(tree, info_sets, game_name)
 
         # 5.3
         print('Problem 5.2')

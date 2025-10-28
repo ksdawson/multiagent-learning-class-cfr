@@ -57,6 +57,7 @@ def find_the_best_response(tree, info_sets):
     p1 = '1'
     p1_best_response = {}
     p1_expected_utility = expectimax(tree, info_sets, p1, p1_best_response)
+    # print(p1_best_response)
     print('Player 1 expected utility: ', p1_expected_utility)
     
     # Calculate p2 best response

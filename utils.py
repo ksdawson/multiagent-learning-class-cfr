@@ -9,11 +9,12 @@ def get_player_from_info_set(info_set_name, info_sets):
         if node.type == 'DecisionNode':
             return node.node.player
 
-def graph_output(output):    
+def graph_output(output, game_name):    
     plt.figure()
     plt.plot(range(len(output)), output)
-    plt.xlabel('Iteration')
-    plt.ylabel('Value')
+    plt.title(f'CFR Player 1 Expected Utility in {game_name}')
+    plt.xlabel('Iterations')
+    plt.ylabel('Expected Utility')
     plt.grid(True)
     plt.show()
 

@@ -24,12 +24,12 @@ def cfr_utility(tree, info_sets, player, rprob1, rprob2, regrets, strategy_sum):
         return tree.node.payoffs[player]
     # Recursive steps
     elif tree.type == 'DecisionNode' and tree.node.player == player:
-        # Player -> ?
+        # Player -> regret matching
         info_set = tree.info_set
 
         # Compute current strategy from regrets
         strategy = regret_matching(regrets[info_set])
-        for a, _ in tree.children.items():
+        for a in tree.children:
             strategy_sum[info_set][a] += rprob1 * strategy[a] # accumulate reach-weighted strategy
 
         # Compute utilities for each action
@@ -40,7 +40,7 @@ def cfr_utility(tree, info_sets, player, rprob1, rprob2, regrets, strategy_sum):
             node_value += strategy[a] * action_utils[a]
 
         # Update regrets
-        for a, _ in tree.children.items():
+        for a in tree.children:
             regret = action_utils[a] - node_value
             regrets[info_set][a] += rprob2 * regret # weighted by opponent reach prob
 
@@ -51,10 +51,10 @@ def cfr_utility(tree, info_sets, player, rprob1, rprob2, regrets, strategy_sum):
         # Probability for uniform opponent strategy
         num_actions = len(tree.children)
         uniform_strategy = 1/num_actions
-        for edge, child_node in tree.children.items():
+        for a, child_node in tree.children.items():
             # Calculate probability to weight this payoff
             if tree.type == 'ChanceNode':
-                prob = tree.node.probs[edge]
+                prob = tree.node.probs[a]
                 adj = 1.0
             else:
                 prob = uniform_strategy
@@ -94,9 +94,9 @@ def cfr(tree, info_sets, player, iters=1000):
 
     return avg_strategy, regrets, utilities
 
-def learning_to_best_respond(tree, info_sets):
+def learning_to_best_respond(tree, info_sets, game_name):
     p1 = '1'
     avg_strategy, regrets, utilities = cfr(tree, info_sets, p1)
-    # print(avg_strategy, '\n')
+    # print(avg_strategy)
     # print(regrets)
-    graph_output(utilities)
+    graph_output(utilities, game_name)

@@ -3,17 +3,17 @@ import re
 class DecisionNode:
     def __init__(self, player, actions):
         self.actions = actions # list of strs
-        self.player = player # int
+        self.player = player # str
 
 class ChanceNode:
-    def __init__(self, actions, probs):
-        self.actions = actions # list of strs
-        self.probs = probs # list of floats
+    def __init__(self, probs):
+        self.actions = list(probs.keys()) # list of strs
+        self.probs = probs # dict mapping strs to floats
 
 class TerminalNode:
     def __init__(self, payoffs):
         self.actions = [] # no edges for a terminal node
-        self.payoffs = payoffs # list of tuples of player, payoff
+        self.payoffs = payoffs # dict of player:payoff
 
 class TreeNode:
     def __init__(self, node):
@@ -59,6 +59,9 @@ class InformationSets:
     def add_info_set(self, name, nodes):
         self.info_sets[name] = nodes
 
+    def get_info_set(self, name):
+        return self.info_sets[name]
+
 def convert_history_to_path(history):
     path = history.split('/')[1:-1]
     path = [act.split(':')[1] for act in path]
@@ -80,20 +83,19 @@ def parse_node(line):
         if not match:
             raise Exception
         history, actions_str = match.groups()
-        actions, probs = [], []
+        probs = {}
         for a in actions_str.split():
             if '=' in a:
                 act, prob = a.split('=')
-                actions.append(act.strip())
-                probs.append(float(prob))
-        node = ChanceNode(actions, probs)
+                probs[act.strip()] = float(prob)
+        node = ChanceNode(probs)
     elif 'terminal' in line:
         # Parse terminal nodes
         match = re.match(r'node\s+(\/.*?)\s+terminal\s+payoffs\s+(.+)', line)
         if not match:
             raise Exception
         history, payoff_str = match.groups()
-        payoffs = {int(p.split('=')[0]): float(p.split('=')[1]) for p in payoff_str.split()}
+        payoffs = {p.split('=')[0]: float(p.split('=')[1]) for p in payoff_str.split()}
         node = TerminalNode(payoffs)
     else:
         # Shouldn't happen

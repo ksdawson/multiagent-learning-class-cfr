@@ -1,4 +1,5 @@
 import re
+import matplotlib.pyplot as plt
 
 ### Helpers ###
 
@@ -7,6 +8,14 @@ def get_player_from_info_set(info_set_name, info_sets):
     for node in nodes:
         if node.type == 'DecisionNode':
             return node.node.player
+
+def graph_output(output):    
+    plt.figure()
+    plt.plot(range(len(output)), output)
+    plt.xlabel('Iteration')
+    plt.ylabel('Value')
+    plt.grid(True)
+    plt.show()
 
 ### Data structures for representing the game ###
 

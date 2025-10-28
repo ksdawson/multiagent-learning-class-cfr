@@ -5,9 +5,9 @@ from problem_5p3 import learning_the_nash_equilibrium
 
 def main():
     games = [
-        # ('Rock Paper Superscissors', './rock_paper_superscissors.txt'),
+        ('Rock Paper Superscissors', './rock_paper_superscissors.txt'),
         ('Kuhn Poker', './kuhn.txt'),
-        # ('Leduc Poker', './leduc2.txt')
+        ('Leduc Poker', './leduc2.txt')
     ]
 
     for game_name, filename in games:

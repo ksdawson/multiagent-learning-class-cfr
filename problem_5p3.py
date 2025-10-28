@@ -39,7 +39,7 @@ def cfr_utility_dual(tree, info_sets, regrets, strategy_sum, rprob1=1.0, rprob2=
         for a, child_node in tree.children.items():
             prob = tree.node.probs[a]
             child_util = cfr_utility_dual(child_node, info_sets, regrets, strategy_sum,
-                                          rprob1, rprob2 * prob)
+                                          rprob1 * prob, rprob2 * prob)
             total_expected['1'] += prob * child_util['1']
             total_expected['2'] += prob * child_util['2']
         return total_expected
@@ -73,11 +73,15 @@ def cfr_dual(tree, info_sets, iters=1000):
 def learning_the_nash_equilibrium(tree, info_sets, game_name):
     # Run CFR with the players playing against each other
     avg_strategy, regrets, utilities = cfr_dual(tree, info_sets)
-    
+    ne_utility = utilities[-1]
+    print('Player 1, 2 NE utilities: ', ne_utility)
+
     # Compute the Nash gap over the iterations
     nash_gaps = []
+    p1_utilities = []
     for p1, p2 in utilities:
+        p1_utilities.append(p1)
         gap = p1 + p2
         nash_gaps.append(gap)
     graph_output(nash_gaps, 'Nash Gap', game_name)
-    graph_output(nash_gaps, 'Expected Utility', game_name)
+    graph_output(p1_utilities, 'NE Expected Utility', game_name)

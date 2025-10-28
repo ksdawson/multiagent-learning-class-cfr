@@ -1,5 +1,15 @@
 import re
 
+### Helpers ###
+
+def get_player_from_info_set(info_set_name, info_sets):
+    nodes = info_sets.get_info_set(info_set_name)
+    for node in nodes:
+        if node.type == 'DecisionNode':
+            return node.node.player
+
+### Data structures for representing the game ###
+
 class DecisionNode:
     def __init__(self, player, actions):
         self.actions = actions # list of strs
@@ -61,6 +71,11 @@ class InformationSets:
 
     def get_info_set(self, name):
         return self.info_sets[name]
+    
+    def get_info_sets(self):
+        return self.info_sets
+
+### Functions for loading a game from a txt file ###
 
 def convert_history_to_path(history):
     path = history.split('/')[1:-1]
@@ -156,6 +171,8 @@ def load_game_from_txt(filepath):
                 raise Exception
             
         return root, info_sets
+
+### Basic tests ###
 
 if __name__ == '__main__':
     load_game_from_txt('./rock_paper_superscissors.txt')

@@ -99,4 +99,4 @@ def learning_to_best_respond(tree, info_sets, game_name):
     avg_strategy, regrets, utilities = cfr(tree, info_sets, p1)
     # print(avg_strategy)
     # print(regrets)
-    graph_output(utilities, game_name)
+    graph_output(utilities, 'Expected Utility', game_name)

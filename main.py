@@ -24,11 +24,8 @@ def main():
         learning_to_best_respond(tree, info_sets, game_name)
 
         # 5.3
-        print('Problem 5.2')
-        learning_the_nash_equilibrium()
-
-        # TODO: Plot results
-        print()
+        print('Problem 5.3')
+        learning_the_nash_equilibrium(tree, info_sets, game_name)
 
 if __name__ == "__main__":
     main()

@@ -56,9 +56,20 @@ def expectimax(tree, info_sets, player, info_set_memo):
 def find_the_best_response(tree, info_sets):
     # Find the best response for Player 1 against a uniform strategy for Player 2,
     # who plays uniformly over all valid actions at each decision node
-    player = '1'
-    expected_utility = expectimax(tree, info_sets, player, {})
-    print(expected_utility)
+    p1 = '1'
+    p1_best_response = {}
+    p1_expected_utility = expectimax(tree, info_sets, p1, p1_best_response)
+    print('Player 1 expected utility: ', p1_expected_utility)
+    
+    # Calculate p2 best response
+    p2 = '2'
+    p2_best_response = {}
+    p2_expected_utility = expectimax(tree, info_sets, p2, p2_best_response)
+    print('Player 2 expected utility: ', p2_expected_utility)
+
+    # Calculate nash gap
+    nash_gap = p1_expected_utility + p2_expected_utility
+    print('Nash gap: ', nash_gap)
 
 def learning_to_best_respond():
     pass
@@ -68,19 +79,22 @@ def learning_the_nash_equilibrium():
 
 def main():
     games = [
-        './rock_paper_superscissors.txt',
-        './kuhn.txt',
-        './leduc2.txt'
+        ('Rock Paper Superscissors', './rock_paper_superscissors.txt'),
+        ('Kuhn Poker', './kuhn.txt'),
+        ('Leduc Poker', './leduc2.txt')
     ]
 
-    for game in games:
+    for game_name, filename in games:
         # Construct the game tree
-        tree, info_sets = load_game_from_txt(game)
+        print(game_name)
+        tree, info_sets = load_game_from_txt(filename)
 
         # 5.1
+        print('Problem 5.1')
         find_the_best_response(tree, info_sets)
 
         # TODO: Plot results
+        print()
 
 if __name__ == "__main__":
     main()
